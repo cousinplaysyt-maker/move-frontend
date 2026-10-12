@@ -1,0 +1,108 @@
+import {
+  MdCalendarMonth,
+  MdAddCircle,
+  MdPersonSearch,
+  MdEmojiEvents,
+} from 'react-icons/md'
+
+export const sports = [
+  { name: 'Pickleball', emoji: '🏓' },
+  { name: 'Basketball', emoji: '🏀' },
+  { name: 'Badminton', emoji: '🏸' },
+  { name: 'Tennis', emoji: '🎾' },
+  { name: 'Padel', emoji: '🎾' },
+]
+
+export const actions = [
+  { label: 'Book Court', Icon: MdCalendarMonth, bg: 'bg-primary-fixed text-on-primary-fixed' },
+  { label: 'Host Play', Icon: MdAddCircle, bg: 'bg-secondary-fixed text-on-secondary-fixed' },
+  { label: 'Find Players', Icon: MdPersonSearch, bg: 'bg-surface-container-highest text-on-surface' },
+  { label: 'Tourneys', Icon: MdEmojiEvents, bg: 'bg-tertiary-fixed text-on-tertiary-fixed' },
+]
+
+export const courts = [
+  {
+    id: 1,
+    name: 'Minglanilla Pickleball Club',
+    type: 'Outdoor Acrylic',
+    rating: 4.9,
+    place: 'Minglanilla, 2.4 km away',
+    sports: ['Pickleball', 'Badminton'],
+    count: 4,
+    price: 350,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDNka2xGGOdDakb9S4c_y79ijqThgZa47rhc4pV9s7rSSUJp6HcVWDrXyqyI-nxfMFPqAUDzbokm7tMEqurQyqk2A3gavOVD2-N15AqSQeTjeNs84XKvZTsDVT2vZO3jmH26Y3yh6IwDI3lIFiOfdk6KxBytWxyCgvE8PDCvsZ6Eb42zU_M9v7IeFOj0RhKQsDgxfmOlEoHAN5lq9DCAxR3ZRNpRD9z8DZy3bWQGoo',
+  },
+  {
+    id: 2,
+    name: 'Metro Sports Center Lahug',
+    type: 'Indoor Hardwood',
+    rating: 4.8,
+    place: 'Lahug, 4.1 km away',
+    sports: ['Badminton', 'Basketball'],
+    count: 8,
+    price: 420,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC-JJQKxH-wRXODyZLSSbxoCghS451cvU0crSVKc_7-J7v5wa8hN8567pUVNU223tVQNBlliUhTF0f1-XY3Zq0rJGhJVhH8kkKTM9OkL2ghbBzGyl2OxWHw91b1gkM2sKJSRqhgbhwL7Fug2KtQFkeTP1i7GUgYDDlyvMrx7eU25ekwfoTqJVSv_hzlepGdcmMLbX46aWzwvd4g6WEevZrvSk-NKLhx2cy0FiSrxtY',
+  },
+  {
+    id: 3,
+    name: 'Cebu City Sports Complex',
+    type: 'Outdoor Synthetic',
+    rating: 4.7,
+    place: 'Uptown Cebu, 1.8 km away',
+    sports: ['Tennis', 'Pickleball', 'Padel'],
+    count: 6,
+    price: 300,
+    img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDg48PsELvdSnnIkMeZ6Nwc15QTu0GMAFPyXhnDb7k8T9cmCVoSJYKDS1_dnJFOECDHcqiPpbangirMbmLfYYpUj0ipgEg7K6XE_MtTGfkEUMa9aeZx-Xnm2goIkmO6JbNg1JIBQBQbrCG80MwT0kGQa6hRtaez0_xLCkuHdMUV2mZh2WEGDaxcyPpZKU1AqItW0OuQ_TjWfa4nfGtM6DehMkSkQs28y6lq-6DnIno',
+  },
+]
+
+export const sessions = [
+  {
+    id: 1,
+    initials: 'CV',
+    avatar: 'bg-on-surface text-surface',
+    host: 'Carlo V.',
+    tag: 'ORGANIZER',
+    tagBg: 'bg-primary-fixed text-on-primary-fixed',
+    venue: 'Minglanilla Pickleball Club • Court 2',
+    level: 'DUPR 3.0 - 3.5',
+    levelBg: 'bg-tertiary-fixed text-on-tertiary-fixed',
+    time: 'Today, 5:30 PM - 7:30 PM',
+    spots: '3 / 4 spots filled',
+    spotsColor: 'text-tertiary',
+    fee: 120,
+    cta: 'Join Game (1 spot left)',
+  },
+  {
+    id: 2,
+    initials: 'BT',
+    avatar: 'bg-secondary text-on-secondary',
+    host: 'Bea Tan',
+    tag: 'CASUAL RUN',
+    tagBg: 'bg-secondary-fixed text-on-secondary-fixed',
+    venue: 'Metro Sports Center Lahug • Court 4 & 5',
+    level: 'Intermediate',
+    levelBg: 'bg-surface-container text-on-surface-variant',
+    time: 'Tonight, 7:00 PM - 9:00 PM',
+    spots: '8 / 12 joined',
+    spotsColor: 'text-primary',
+    fee: 150,
+    cta: 'Join Game',
+  },
+  {
+    id: 3,
+    initials: 'MD',
+    avatar: 'bg-surface-container-highest text-on-surface',
+    host: 'Marky D.',
+    tag: '5v5 FULL',
+    tagBg: 'bg-tertiary-fixed text-on-tertiary-fixed',
+    venue: 'Cebu City Sports Complex • Main Gym',
+    level: 'All Levels',
+    levelBg: 'bg-surface-container-highest text-on-surface',
+    time: 'Tomorrow, 6:00 AM - 8:00 AM',
+    spots: '7 / 10 joined',
+    spotsColor: 'text-primary',
+    fee: 80,
+    cta: 'Join Game',
+  },
+]
