@@ -84,3 +84,14 @@ function useLive(getter) {
 
 export const useTable = (name) => useLive(() => read(name));
 export const useProfile = () => useLive(getProfile);
+
+export const defaultSettings = {
+  city: 'Cebu City',
+  unit: 'km',
+  notifyBookings: true,
+  notifyGames: true,
+  notifyTourneys: false,
+};
+export const getSettings = () => ({ ...defaultSettings, ...read('settings', {}) });
+export const saveSettings = (patch) => write('settings', { ...getSettings(), ...patch });
+export const useSettings = () => useLive(getSettings);

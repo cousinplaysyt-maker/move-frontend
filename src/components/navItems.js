@@ -1,9 +1,9 @@
-import { MdSportsTennis, MdMap, MdNearMe, MdGroups, MdPerson } from 'react-icons/md'
+import { IoTennisballOutline, IoMapOutline, IoNavigateOutline, IoPeopleOutline, IoPersonOutline } from 'react-icons/io5';
 
 export const navItems = [
-  { to: '/', label: 'Discover', Icon: MdSportsTennis },
-  { to: '/map-view', label: 'Map View', Icon: MdMap },
-  { to: '/near-me', label: 'Near Me', Icon: MdNearMe },
-  { to: '/open-play', label: 'Open Play', Icon: MdGroups },
-  { to: '/profile', label: 'Profile', Icon: MdPerson },
-]
+  { label: 'Discover', path: '/', Icon: IoTennisballOutline },
+  { label: 'Map View', path: '/map', Icon: IoMapOutline },
+  { label: 'Near Me', path: '/near-me', Icon: IoNavigateOutline },
+  { label: 'Open Play', path: '/open-play', Icon: IoPeopleOutline },
+  { label: 'Profile', path: '/profile', Icon: IoPersonOutline },
+];

@@ -1,52 +1,71 @@
-import { NavLink } from 'react-router-dom'
-import { MdTune, MdPerson, MdArrowDropDown, MdLocationOn } from 'react-icons/md'
-import Logo from './Logo'
-import { navItems } from './navItems'
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { IoLocationSharp, IoCaretDown, IoOptionsOutline, IoPerson } from 'react-icons/io5';
+import { navItems } from './navItems';
+import { saveSettings, useSettings } from '../data/db';
+
+const CITIES = ['Cebu City', 'Mandaue', 'Lapu-Lapu', 'Talisay', 'Minglanilla'];
 
 export default function Header() {
+  const { city } = useSettings();
+  const [open, setOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 bg-surface/85 backdrop-blur-xl border-b border-outline-variant/40 pt-safe">
-      <div className="max-w-7xl mx-auto h-16 px-4 md:px-8 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 min-w-0">
-          <Logo />
-          <button className="hidden sm:flex items-center gap-0.5 pl-3 ml-1 border-l border-outline-variant text-secondary hover:text-primary transition-colors">
-            <MdLocationOn className="text-base" />
-            <span className="text-label-sm uppercase tracking-wider whitespace-nowrap">Cebu City, Philippines</span>
-            <MdArrowDropDown className="text-lg" />
-          </button>
+    <header className="sticky top-0 z-40 border-b border-[#e5eeff] bg-[#f8f9ff]/90 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4">
+        <div className="flex items-center gap-3">
+          <Link to="/" aria-label="move. home" className="flex items-center gap-2">
+            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#006948] text-lg font-extrabold text-white">m</span>
+            <span className="text-xl font-extrabold tracking-tight">move<span className="text-[#006948]">.</span></span>
+          </Link>
+
+          <div className="relative">
+            <button onClick={() => setOpen((o) => !o)} className="flex items-center gap-1 rounded-full px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-[#565e74] hover:bg-[#e5eeff]">
+              <IoLocationSharp className="text-[#006948]" /> {city}, Philippines <IoCaretDown size={10} />
+            </button>
+            {open && (
+              <ul className="absolute left-0 top-full z-50 mt-1 w-44 rounded-xl bg-white p-1 shadow-lg">
+                {CITIES.map((c) => (
+                  <li key={c}>
+                    <button
+                      onClick={() => { saveSettings({ city: c }); setOpen(false); }}
+                      className={`w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-[#eff4ff] ${c === city ? 'font-bold text-[#006948]' : ''}`}
+                    >
+                      {c}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
-        <nav className="hidden lg:flex items-center gap-1">
-          {navItems.map(({ to, label, Icon }) => (
+        <nav className="hidden items-center gap-1 md:flex">
+          {navItems.map(({ label, path, Icon }) => (
             <NavLink
-              key={to}
-              to={to}
-              end
+              key={path}
+              to={path}
+              end={path === '/'}
               className={({ isActive }) =>
-                `flex items-center gap-2 px-4 py-2 rounded-full text-label-lg transition-colors ${
-                  isActive
-                    ? 'bg-primary-fixed text-on-primary-fixed'
-                    : 'text-on-surface-variant hover:bg-surface-container'
+                `flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                  isActive ? 'bg-[#85f8c4] text-[#002114]' : 'text-[#3d4a42] hover:bg-[#e5eeff]'
                 }`
               }
             >
-              <Icon className="text-lg" />
-              {label}
+              <Icon size={18} /> {label}
             </NavLink>
           ))}
         </nav>
 
         <div className="flex items-center gap-1">
-          <button aria-label="Filter courts" className="w-11 h-11 flex items-center justify-center rounded-full text-on-surface-variant hover:bg-surface-container transition-colors">
-            <MdTune className="text-[22px]" />
-          </button>
-          <button aria-label="Open profile" className="w-11 h-11 flex items-center justify-center rounded-full hover:opacity-90">
-            <span className="w-8 h-8 rounded-full bg-on-surface text-surface flex items-center justify-center">
-              <MdPerson className="text-[18px]" />
-            </span>
-          </button>
+          <Link to="/settings" aria-label="Settings" className="flex h-10 w-10 items-center justify-center rounded-full text-[#3d4a42] hover:bg-[#e5eeff]">
+            <IoOptionsOutline size={22} />
+          </Link>
+          <Link to="/profile" aria-label="Profile" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1c30] text-white">
+            <IoPerson size={16} />
+          </Link>
         </div>
       </div>
     </header>
-  )
+  );
 }

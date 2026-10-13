@@ -2,6 +2,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
 import { SPORTS } from '../data/seed';
+import { useSettings } from '../data/db';
 
 export const peso = (n) => `₱${Number(n).toLocaleString('en-PH')}`;
 export const fmtDate = (iso) =>
@@ -10,6 +11,7 @@ export const fmtTime = (hhmm) => {
   const [h, m] = hhmm.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
 };
+export const fmtDist = (km, unit = 'km') => (unit === 'mi' ? `${(km * 0.621371).toFixed(1)} mi` : `${km} km`);
 export const sportOf = (key) => SPORTS.find((s) => s.key === key) ?? { key, label: key, emoji: '🏅' };
 
 export const inputCls =
@@ -92,6 +94,7 @@ export function Empty({ title, hint, action }) {
 }
 
 export function VenueCard({ venue, selected, onSelect }) {
+  const { unit } = useSettings();
   return (
     <Card className={`transition ${selected ? 'ring-2 ring-[#006948]' : ''}`}>
       <div className="flex items-start justify-between gap-3" onClick={onSelect} role={onSelect ? 'button' : undefined}>
@@ -99,7 +102,7 @@ export function VenueCard({ venue, selected, onSelect }) {
           <h3 className="truncate font-bold">{venue.name}</h3>
           <p className="truncate text-sm text-[#565e74]">{venue.area}</p>
           <p className="mt-1 text-sm">
-            {venue.sports.map((s) => sportOf(s).emoji).join(' ')} · {venue.courts} courts · {venue.distanceKm} km
+            {venue.sports.map((s) => sportOf(s).emoji).join(' ')} · {venue.courts} courts · {fmtDist(venue.distanceKm, unit)}
           </p>
         </div>
         <div className="shrink-0 text-right">

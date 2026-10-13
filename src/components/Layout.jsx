@@ -1,15 +1,15 @@
-import { Outlet } from 'react-router-dom'
-import Header from './Header'
-import BottomNav from './BottomNav'
+import { Outlet } from 'react-router-dom';
+import Header from './Header';
+import BottomNav from './BottomNav';
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-surface text-on-surface antialiased">
+    <div className="min-h-screen bg-[#f8f9ff] text-[#0b1c30]">
       <Header />
-      <main className="max-w-7xl mx-auto pb-24 lg:pb-12">
+      <main>
         <Outlet />
       </main>
       <BottomNav />
     </div>
-  )
+  );
 }
