@@ -15,10 +15,10 @@ const day = (offset) => {
 
 export const seed = {
   venues: [
-    { id: 'minglanilla', name: 'Minglanilla Pickleball Club', area: 'Ward 2, Poblacion, Minglanilla', sports: ['pickleball', 'badminton'], price: 300, distanceKm: 8.2, courts: 7, amenities: ['Lighting', 'Indoor AC', 'Pro shop', 'Paddle rental'], lat: 10.2447, lng: 123.7961 },
-    { id: 'lahug', name: 'Metro Sports Center Lahug', area: 'Salinas Drive, Lahug, Cebu City', sports: ['badminton', 'tennis'], price: 350, distanceKm: 3.4, courts: 6, amenities: ['Lighting', 'Parking', 'Showers'], lat: 10.3278, lng: 123.9066 },
-    { id: 'mandaue', name: 'North Reclamation Badminton & Hoops', area: 'Subangdaku, Mandaue', sports: ['badminton', 'basketball'], price: 280, distanceKm: 5.1, courts: 4, amenities: ['Lighting', 'Parking'], lat: 10.3436, lng: 123.9318 },
-    { id: 'mactan', name: 'Mactan Seaside Padel & Tennis', area: 'Punta Engaño, Lapu-Lapu', sports: ['padel', 'tennis'], price: 450, distanceKm: 11.8, courts: 3, amenities: ['Glass courts', 'Lighting', 'Cafe'], lat: 10.319, lng: 124.005 },
+    { id: 'minglanilla', bookingUrl: 'https://www.google.com/search?q=Minglanilla+Pickleball+Club+book+court', name: 'Minglanilla Pickleball Club', area: 'Ward 2, Poblacion, Minglanilla', sports: ['pickleball', 'badminton'], price: 300, distanceKm: 8.2, courts: 7, amenities: ['Lighting', 'Indoor AC', 'Pro shop', 'Paddle rental'], lat: 10.2447, lng: 123.7961 },
+    { id: 'lahug', bookingUrl: 'https://www.google.com/search?q=Metro+Sports+Center+Lahug+book+court', name: 'Metro Sports Center Lahug', area: 'Salinas Drive, Lahug, Cebu City', sports: ['badminton', 'tennis'], price: 350, distanceKm: 3.4, courts: 6, amenities: ['Lighting', 'Parking', 'Showers'], lat: 10.3278, lng: 123.9066 },
+    { id: 'mandaue', bookingUrl: 'https://www.google.com/search?q=North+Reclamation+Badminton+Hoops+book+court', name: 'North Reclamation Badminton & Hoops', area: 'Subangdaku, Mandaue', sports: ['badminton', 'basketball'], price: 280, distanceKm: 5.1, courts: 4, amenities: ['Lighting', 'Parking'], lat: 10.3436, lng: 123.9318 },
+    { id: 'mactan', bookingUrl: 'https://www.google.com/search?q=Mactan+Seaside+Padel+Tennis+book+court', name: 'Mactan Seaside Padel & Tennis', area: 'Punta Engaño, Lapu-Lapu', sports: ['padel', 'tennis'], price: 450, distanceKm: 11.8, courts: 3, amenities: ['Glass courts', 'Lighting', 'Cafe'], lat: 10.319, lng: 124.005 },
   ],
   matches: [
     { id: 'm1', title: 'Friday night rally', sport: 'pickleball', venueId: 'minglanilla', date: day(1), time: '18:00', level: 'Intermediate', spots: 8, joined: ['Migs', 'Ana', 'Jo'], host: 'Migs' },
@@ -43,4 +43,4 @@ export const seed = {
   bookings: [],
 };
 
-export const defaultProfile = { name: 'Player One', sport: 'pickleball', level: 'Beginner', area: 'Talisay' };
+export const defaultProfile = { name: 'Player One', sport: 'pickleball', level: 'Beginner', area: 'Talisay', isPrivate: false };

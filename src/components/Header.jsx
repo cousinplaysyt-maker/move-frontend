@@ -1,13 +1,17 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
-import { IoLocationSharp, IoCaretDown, IoOptionsOutline, IoPerson } from 'react-icons/io5';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { IoLocationSharp, IoCaretDown, IoOptionsOutline, IoLogOutOutline } from 'react-icons/io5';
 import { navItems } from './navItems';
-import { saveSettings, useSettings } from '../data/db';
+import { saveSettings, useSettings, useProfile } from '../data/db';
+import { logout } from '../data/auth';
+import { Avatar } from './ui';
 
 const CITIES = ['Cebu City', 'Mandaue', 'Lapu-Lapu', 'Talisay', 'Minglanilla'];
 
 export default function Header() {
   const { city } = useSettings();
+  const profile = useProfile();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   return (
@@ -28,7 +32,7 @@ export default function Header() {
                 {CITIES.map((c) => (
                   <li key={c}>
                     <button
-                      onClick={() => { saveSettings({ city: c }); setOpen(false); }}
+                      onClick={() => { saveSettings({ city: c, myLoc: null }); setOpen(false); }}
                       className={`w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-[#eff4ff] ${c === city ? 'font-bold text-[#006948]' : ''}`}
                     >
                       {c}
@@ -61,9 +65,12 @@ export default function Header() {
           <Link to="/settings" aria-label="Settings" className="flex h-10 w-10 items-center justify-center rounded-full text-[#3d4a42] hover:bg-[#e5eeff]">
             <IoOptionsOutline size={22} />
           </Link>
-          <Link to="/profile" aria-label="Profile" className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0b1c30] text-white">
-            <IoPerson size={16} />
+          <Link to="/profile" aria-label="Profile">
+            <Avatar name={profile.name} src={profile.avatar} size={36} />
           </Link>
+          <button onClick={() => { logout(); navigate('/login'); }} aria-label="Log out" title="Log out" className="flex h-10 w-10 items-center justify-center rounded-full text-[#3d4a42] hover:bg-[#e5eeff]">
+            <IoLogOutOutline size={22} />
+          </button>
         </div>
       </div>
     </header>

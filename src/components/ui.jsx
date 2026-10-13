@@ -2,7 +2,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { IoChevronBack } from 'react-icons/io5';
 import { SPORTS } from '../data/seed';
-import { useSettings } from '../data/db';
+import { useSettings, useTable } from '../data/db';
+import { useSocial } from '../data/social';
 
 export const peso = (n) => `₱${Number(n).toLocaleString('en-PH')}`;
 export const fmtDate = (iso) =>
@@ -11,8 +12,34 @@ export const fmtTime = (hhmm) => {
   const [h, m] = hhmm.split(':').map(Number);
   return `${((h + 11) % 12) + 1}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
 };
-export const fmtDist = (km, unit = 'km') => (unit === 'mi' ? `${(km * 0.621371).toFixed(1)} mi` : `${km} km`);
+export const fmtDist = (km, unit = 'km') => (unit === 'mi' ? `${(km * 0.621371).toFixed(1)} mi` : `${Number(km).toFixed(Number.isInteger(km) ? 0 : 1)} km`);
 export const sportOf = (key) => SPORTS.find((s) => s.key === key) ?? { key, label: key, emoji: '🏅' };
+
+export const firstName = (n) => n.split(' ')[0];
+// joined names in matches are sometimes first names only, so match both
+export const isIn = (names, player) => names.includes(player.name) || names.includes(firstName(player.name));
+
+const usePlayers = () => useTable('players');
+
+export function Avatar({ name = '?', src, size = 40, className = '' }) {
+  const initials = name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();
+  return src ? (
+    <img src={src} alt={name} style={{ width: size, height: size }} className={`shrink-0 rounded-full object-cover ${className}`} />
+  ) : (
+    <span style={{ width: size, height: size, fontSize: size / 2.6 }} className={`flex shrink-0 items-center justify-center rounded-full bg-[#0b1c30] font-bold text-white ${className}`}>{initials}</span>
+  );
+}
+
+export function FriendsJoining({ names }) {
+  const { friendIds } = useSocial();
+  const going = usePlayers().filter((p) => friendIds.has(p.id) && isIn(names, p));
+  if (!going.length) return null;
+  return (
+    <p className="mt-2 rounded-xl bg-[#85f8c4]/50 px-3 py-2 text-sm font-semibold text-[#002114]">
+      👥 {going.map((f) => firstName(f.name)).join(', ')} {going.length > 1 ? 'are' : 'is'} joining
+    </p>
+  );
+}
 
 export const inputCls =
   'w-full rounded-xl border border-[#bccac0] bg-white px-3 py-2.5 text-sm outline-none focus:border-[#006948] focus:ring-2 focus:ring-[#85f8c4]';

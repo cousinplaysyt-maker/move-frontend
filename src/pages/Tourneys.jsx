@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { db, useTable, useProfile } from '../data/db';
-import { Page, Card, Btn, SportChips, Empty, peso, fmtDate, sportOf } from '../components/ui';
+import { Page, Card, Btn, SportChips, Empty, FriendsJoining, peso, fmtDate, sportOf } from '../components/ui';
 
 export default function Tourneys() {
   const tournaments = useTable('tournaments');
@@ -18,7 +18,7 @@ export default function Tourneys() {
     });
 
   return (
-    <Page title="Tourneys" subtitle="Upcoming tournaments around Cebu">
+    <Page title="Tourneys" subtitle="Upcoming tournaments around Cebu" actions={<Btn to="/tourneys/new">Add tournament</Btn>}>
       <SportChips value={sport} onChange={setSport} />
       {list.length === 0 ? (
         <Empty title="No tournaments for this sport" hint="Check back soon." />
@@ -33,6 +33,7 @@ export default function Tourneys() {
                 <h3 className="mt-1 text-lg font-bold">{t.name}</h3>
                 <p className="text-sm text-[#565e74]">{fmtDate(t.date)} · {venues.find((v) => v.id === t.venueId)?.name}</p>
                 <p className="mt-1 text-sm">{peso(t.fee)} entry · {t.registered.length}/{t.slots} registered</p>
+                <FriendsJoining names={t.registered} />
                 <div className="mt-3">
                   {isIn ? (
                     <Btn variant="soft" onClick={() => toggle(t)}>Withdraw</Btn>

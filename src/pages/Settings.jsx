@@ -1,4 +1,4 @@
-import { useSettings, saveSettings, resetDb } from '../data/db';
+import { useSettings, saveSettings, useProfile, saveProfile, resetDb } from '../data/db';
 import { Page, Card, Btn, Field, inputCls } from '../components/ui';
 
 const CITIES = ['Cebu City', 'Mandaue', 'Lapu-Lapu', 'Talisay', 'Minglanilla'];
@@ -17,6 +17,7 @@ function Toggle({ label, hint, checked, onChange }) {
 
 export default function Settings() {
   const s = useSettings();
+  const profile = useProfile();
 
   return (
     <Page title="Settings" subtitle="Changes save automatically">
@@ -25,9 +26,12 @@ export default function Settings() {
           <h2 className="mb-3 font-bold">Location and units</h2>
           <div className="grid gap-4">
             <Field label="City">
-              <select className={inputCls} value={s.city} onChange={(e) => saveSettings({ city: e.target.value })}>
+              <select className={inputCls} value={s.city} onChange={(e) => saveSettings({ city: e.target.value, myLoc: null })}>
                 {CITIES.map((c) => <option key={c}>{c}</option>)}
               </select>
+            </Field>
+            <Field label={`Search radius: ${s.radiusKm} km`}>
+              <input type="range" min="1" max="50" value={s.radiusKm} onChange={(e) => saveSettings({ radiusKm: Number(e.target.value) })} className="w-full accent-[#006948]" />
             </Field>
             <Field label="Distance">
               <select className={inputCls} value={s.unit} onChange={(e) => saveSettings({ unit: e.target.value })}>
@@ -47,9 +51,19 @@ export default function Settings() {
           </div>
         </Card>
 
+        <Card>
+          <h2 className="mb-1 font-bold">Privacy</h2>
+          <Toggle
+            label="Private profile"
+            hint={profile.isPrivate ? 'Only friends can see the games you join' : 'Anyone can see the games you join'}
+            checked={!!profile.isPrivate}
+            onChange={(v) => saveProfile({ isPrivate: v })}
+          />
+        </Card>
+
         <Card className="md:col-span-2">
           <h2 className="mb-1 font-bold">Your data</h2>
-          <p className="mb-3 text-sm text-[#565e74]">Everything is stored in this browser. Resetting brings back the sample venues, games and tournaments and clears your bookings.</p>
+          <p className="mb-3 text-sm text-[#565e74]">Everything is stored in this browser. Resetting brings back the sample venues, games and tournaments and clears your bookings. Your account stays.</p>
           <div className="flex flex-wrap gap-2">
             <Btn to="/profile" variant="soft">Edit profile</Btn>
             <Btn variant="danger" onClick={() => { if (window.confirm('Reset all data?')) resetDb(); }}>Reset all data</Btn>

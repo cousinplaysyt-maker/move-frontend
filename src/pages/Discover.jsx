@@ -53,7 +53,10 @@ export default function Discover() {
         ))}
       </section>
 
-      <h2 className="mb-3 text-lg font-bold">Courts you can book</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-lg font-bold">Courts you can book</h2>
+        <Btn to="/courts/new" variant="soft">Add court</Btn>
+      </div>
       <div className="grid gap-3 md:grid-cols-2">
         {popular.map((v) => <VenueCard key={v.id} venue={v} />)}
       </div>

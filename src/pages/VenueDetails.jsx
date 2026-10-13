@@ -1,12 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useTable } from '../data/db';
-import { Page, Card, Btn, Empty, peso, fmtDate, fmtTime, sportOf } from '../components/ui';
+import { useNearby } from '../data/geo';
+import { Page, Card, Btn, Empty, peso, fmtDist, fmtDate, fmtTime, sportOf } from '../components/ui';
 
 export default function VenueDetails() {
   const { id } = useParams();
   const venues = useTable('venues');
   const matches = useTable('matches');
-  const venue = venues.find((v) => v.id === id);
+  const { list: nearby } = useNearby({ withinRadius: false });
+  const venue = nearby.find((v) => v.id === id) ?? venues.find((v) => v.id === id);
 
   if (!venue) {
     return (
@@ -25,7 +27,7 @@ export default function VenueDetails() {
           <p>{venue.sports.map((s) => `${sportOf(s).emoji} ${sportOf(s).label}`).join(' · ')}</p>
           <p className="text-2xl font-extrabold text-[#006948]">{peso(venue.price)}<span className="text-xs font-semibold text-[#565e74]"> / court / hr</span></p>
         </div>
-        <p className="mt-2 text-sm text-[#565e74]">{venue.courts} courts · {venue.distanceKm} km from you</p>
+        <p className="mt-2 text-sm text-[#565e74]">{venue.courts} courts · {fmtDist(venue.distanceKm)} from you</p>
         <div className="mt-3 flex flex-wrap gap-2">
           {venue.amenities.map((a) => <span key={a} className="rounded-full bg-[#dce9ff] px-3 py-1 text-xs font-semibold">{a}</span>)}
         </div>

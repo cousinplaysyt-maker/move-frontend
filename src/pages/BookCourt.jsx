@@ -1,81 +1,45 @@
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { db, useTable, useProfile } from '../data/db';
-import { Page, Card, Btn, Field, inputCls, peso, fmtDate, fmtTime } from '../components/ui';
-
-const HOURS = Array.from({ length: 16 }, (_, i) => `${String(i + 6).padStart(2, '0')}:00`); // 6 AM to 9 PM
-const today = () => new Date().toISOString().slice(0, 10);
-const startHour = (t) => parseInt(t, 10);
+import { useParams } from 'react-router-dom';
+import { useTable } from '../data/db';
+import { Page, Card, Btn, Field, Empty, inputCls, peso } from '../components/ui';
 
 export default function BookCourt() {
   const { venueId } = useParams();
-  const navigate = useNavigate();
   const venues = useTable('venues');
-  const bookings = useTable('bookings');
-  const me = useProfile().name;
+  const [picked, setPicked] = useState(venueId ?? '');
 
-  const [pickedVenue, setPickedVenue] = useState(venueId ?? '');
-  const [court, setCourt] = useState(1);
-  const [date, setDate] = useState(today());
-  const [time, setTime] = useState('17:00');
-  const [hours, setHours] = useState(1);
-  const [error, setError] = useState('');
-
-  const venue = venues.find((v) => v.id === (pickedVenue || venueId)) ?? venues[0];
-  if (!venue) return <Page title="Book a court"><p>Loading…</p></Page>;
-
-  const total = venue.price * hours;
-
-  const clash = (b) =>
-    b.venueId === venue.id && b.court === court && b.date === date && b.status === 'confirmed' &&
-    startHour(time) < startHour(b.time) + b.hours && startHour(b.time) < startHour(time) + hours;
-
-  const confirm = () => {
-    if (bookings.some(clash)) {
-      setError(`Court ${court} is already booked at that time. Pick another court or time.`);
-      return;
-    }
-    db.bookings.insert({ venueId: venue.id, court, date, time, hours, total, status: 'confirmed', player: me });
-    navigate('/profile');
-  };
+  const venue = venues.find((v) => v.id === (picked || venueId)) ?? venues[0];
+  if (!venue) return <Page title="Book a court"><Empty title="No venues yet" action={<Btn to="/courts/new">Add court</Btn>} /></Page>;
 
   return (
-    <Page title="Book a court" subtitle={venue.name}>
+    <Page title="Book a court" subtitle="Booking is done on the venue's own page">
       <Card>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Field label="Venue">
-            <select className={inputCls} value={venue.id} onChange={(e) => { setPickedVenue(e.target.value); setCourt(1); setError(''); }}>
-              {venues.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
-            </select>
-          </Field>
-          <Field label="Court">
-            <select className={inputCls} value={court} onChange={(e) => { setCourt(Number(e.target.value)); setError(''); }}>
-              {Array.from({ length: venue.courts }, (_, i) => <option key={i + 1} value={i + 1}>Court {i + 1}</option>)}
-            </select>
-          </Field>
-          <Field label="Date"><input type="date" min={today()} className={inputCls} value={date} onChange={(e) => { setDate(e.target.value); setError(''); }} /></Field>
-          <Field label="Start time">
-            <select className={inputCls} value={time} onChange={(e) => { setTime(e.target.value); setError(''); }}>
-              {HOURS.map((h) => <option key={h} value={h}>{fmtTime(h)}</option>)}
-            </select>
-          </Field>
-          <Field label="Hours">
-            <select className={inputCls} value={hours} onChange={(e) => { setHours(Number(e.target.value)); setError(''); }}>
-              {[1, 2, 3, 4].map((h) => <option key={h} value={h}>{h} hour{h > 1 ? 's' : ''}</option>)}
-            </select>
-          </Field>
+        <Field label="Venue">
+          <select className={inputCls} value={venue.id} onChange={(e) => setPicked(e.target.value)}>
+            {venues.map((v) => <option key={v.id} value={v.id}>{v.name}</option>)}
+          </select>
+        </Field>
+
+        <div className="mt-4 rounded-xl bg-[#eff4ff] p-3">
+          <p className="font-bold">{venue.name}</p>
+          <p className="text-sm text-[#565e74]">{venue.area} · {peso(venue.price)} per court / hr</p>
+          {venue.bookingUrl && <p className="mt-2 break-all text-sm text-[#006948]">{venue.bookingUrl}</p>}
         </div>
 
-        <div className="mt-5 flex items-center justify-between rounded-xl bg-[#eff4ff] p-3">
-          <div className="text-sm">
-            <p className="font-bold">{fmtDate(date)}, {fmtTime(time)} · {hours}h</p>
-            <p className="text-[#565e74]">Court {court} at {peso(venue.price)} per hour</p>
-          </div>
-          <p className="text-xl font-extrabold text-[#006948]">{peso(total)}</p>
+        <div className="mt-4">
+          {venue.bookingUrl ? (
+            <a
+              href={venue.bookingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-full bg-[#006948] px-5 py-2.5 text-sm font-bold text-white shadow-[0_4px_14px_rgba(0,105,72,0.3)] transition hover:bg-[#00855d] active:scale-95"
+            >
+              Book now
+            </a>
+          ) : (
+            <p className="text-sm font-semibold text-[#565e74]">This venue has no booking link yet.</p>
+          )}
         </div>
-
-        {error && <p role="alert" className="mt-3 text-sm font-semibold text-[#ba1a1a]">{error}</p>}
-        <div className="mt-4"><Btn onClick={confirm}>Confirm booking</Btn></div>
       </Card>
     </Page>
   );

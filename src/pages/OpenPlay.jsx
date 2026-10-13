@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { db, useTable, useProfile } from '../data/db';
-import { Page, Card, Btn, SportChips, Empty, fmtDate, fmtTime, sportOf } from '../components/ui';
+import { Page, Card, Btn, SportChips, Empty, FriendsJoining, fmtDate, fmtTime, sportOf } from '../components/ui';
 
 export default function OpenPlay() {
   const matches = useTable('matches');
@@ -41,6 +41,7 @@ export default function OpenPlay() {
                   {fmtDate(m.date)}, {fmtTime(m.time)} · {venue?.name ?? 'Venue TBA'}
                 </p>
                 <p className="mt-1 text-sm">Hosted by {m.host} · {left > 0 ? `${left} spots left` : 'Full'}</p>
+                <FriendsJoining names={m.joined} />
                 <div className="mt-3">
                   {isIn ? (
                     <Btn variant="soft" onClick={() => toggle(m)}>Leave game</Btn>
