@@ -3,6 +3,8 @@ import { useTable, useProfile, saveProfile, resetDb } from '../data/db';
 import { SPORTS } from '../data/seed';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../data/auth';
+import { ACHIEVEMENTS } from '../data/achievements';
+import Chibi from '../components/Chibi';
 import { Page, Card, Btn, Avatar, Field, Empty, inputCls, fmtDate, fmtTime, sportOf } from '../components/ui';
 
 export default function Profile() {
@@ -78,6 +80,22 @@ export default function Profile() {
           </div>
         </form>
       </Card>
+
+      <h2 className="mb-2 mt-6 font-bold">Trophy case · {(profile.achievements ?? []).length}/{ACHIEVEMENTS.length}</h2>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+        {ACHIEVEMENTS.map((a) => {
+          const got = (profile.achievements ?? []).includes(a.id);
+          return (
+            <Card key={a.id} className={`flex items-center gap-3 ${got ? '' : 'opacity-50'}`}>
+              <div className={got ? '' : 'grayscale'}><Chibi who={a.who} size={44} wave={false} /></div>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold">{got ? a.icon : '🔒'} {a.title}</p>
+                <p className="text-xs text-[#565e74]">{a.text}</p>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
 
       <h2 className="mb-2 mt-6 font-bold">Games I joined</h2>
       {myGames.length === 0 ? (

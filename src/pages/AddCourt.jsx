@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../data/db';
+import { db, getSession } from '../data/db';
+import { checkCourtAchievements } from '../data/achievements';
 import { SPORTS } from '../data/seed';
 import { Page, Card, Btn, Field, inputCls } from '../components/ui';
 
@@ -34,7 +35,9 @@ export default function AddCourt() {
       bookingUrl: form.bookingUrl.trim(),
       lat: Number(form.lat),
       lng: Number(form.lng),
+      addedBy: getSession(),
     });
+    checkCourtAchievements();
     navigate('/map');
   };
 

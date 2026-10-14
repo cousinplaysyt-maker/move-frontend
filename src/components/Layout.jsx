@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import Header from './Header';
 import BottomNav from './BottomNav';
+import AchievementToast from './AchievementToast';
 import { useUser } from '../data/db';
 
 export default function Layout() {
@@ -13,6 +14,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <BottomNav />
+      <AchievementToast />
     </div>
   );
 }

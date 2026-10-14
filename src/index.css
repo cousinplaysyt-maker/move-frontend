@@ -112,3 +112,35 @@ body {
 .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .no-scrollbar { scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ---- achievement chibi animations ---- */
+@keyframes chibi-in { 0% { transform: translateY(140%) scale(.8); opacity: 0; } 60% { transform: translateY(-14px) scale(1.04); opacity: 1; } 80% { transform: translateY(4px); } 100% { transform: none; opacity: 1; } }
+@keyframes chibi-out { to { transform: translateX(130%) rotate(6deg); opacity: 0; } }
+@keyframes chibi-wave { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-28deg); } 75% { transform: rotate(18deg); } }
+@keyframes chibi-pop { 0%, 40% { transform: scale(0); } 70% { transform: scale(1.1); } 100% { transform: scale(1); } }
+@keyframes chibi-blink { 0%, 92%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
+.chibi-in { animation: chibi-in .7s cubic-bezier(.2, .9, .3, 1.2) both; }
+.chibi-out { animation: chibi-out .5s ease-in both; }
+.chibi-wave { animation: chibi-wave .7s ease-in-out infinite; }
+.chibi-bubble { transform-origin: bottom right; animation: chibi-pop .9s ease-out both; }
+.chibi-blink { animation: chibi-blink 3.2s infinite; }
+@media (prefers-reduced-motion: reduce) { .chibi-wave, .chibi-blink { animation: none; } .chibi-in { animation-duration: .01s; } }
+
+
+/* ---- big achievement celebration ---- */
+@keyframes ach-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ach-fade-out { to { opacity: 0; } }
+@keyframes ach-pop { 0% { transform: scale(.2) translateY(80px); opacity: 0; } 55% { transform: scale(1.12) translateY(-10px); opacity: 1; } 75% { transform: scale(.97); } 100% { transform: none; } }
+@keyframes ach-spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes ach-fall { 0% { transform: translate(0, -10vh) rotate(0); opacity: 1; } 100% { transform: translate(var(--drift), 110vh) rotate(720deg); opacity: .9; } }
+@keyframes ach-shine { 0%, 100% { text-shadow: 0 0 10px #ffb95f, 0 0 24px #ffb95f; } 50% { text-shadow: 0 0 20px #fde047, 0 0 50px #fde047, 0 0 80px #ffb95f; } }
+@keyframes ach-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.ach-fade-in { animation: ach-fade-in .3s ease-out both; }
+.ach-fade-out { animation: ach-fade-out .5s ease-in both; }
+.ach-pop { animation: ach-pop .9s cubic-bezier(.2, .9, .3, 1.2) both; }
+.ach-rays { position: absolute; left: 50%; top: 50%; width: 170vmax; height: 170vmax; transform: translate(-50%, -50%); background: repeating-conic-gradient(from 0deg, rgba(255,185,95,.28) 0deg 10deg, transparent 10deg 20deg); -webkit-mask-image: radial-gradient(circle, #000 5%, transparent 55%); mask-image: radial-gradient(circle, #000 5%, transparent 55%); animation: ach-spin 24s linear infinite; }
+.ach-confetti { position: absolute; top: 0; animation-name: ach-fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+.ach-title { animation: ach-shine 1.6s ease-in-out infinite; }
+.ach-char { animation: ach-bounce 1.1s ease-in-out infinite; }
+.ach-banner { animation: ach-bounce 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ach-rays, .ach-confetti, .ach-title, .ach-char, .ach-banner { animation: none; } }

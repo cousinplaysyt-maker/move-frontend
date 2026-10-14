@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../data/db';
 import { SPORTS } from '../data/seed';
+import { checkPlayerAchievement } from '../data/achievements';
 import { Page, Card, Btn, Field, inputCls } from '../components/ui';
 
 export default function AddPlayer() {
@@ -12,6 +13,7 @@ export default function AddPlayer() {
   const submit = (e) => {
     e.preventDefault();
     db.players.insert({ ...form, name: form.name.trim(), area: form.area.trim(), invited: false });
+    checkPlayerAchievement();
     navigate('/players');
   };
 

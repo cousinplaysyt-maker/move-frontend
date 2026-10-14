@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db, useTable } from '../data/db';
 import { SPORTS } from '../data/seed';
+import { checkTourneyAchievement } from '../data/achievements';
 import { Page, Card, Btn, Field, Empty, inputCls } from '../components/ui';
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -24,6 +25,7 @@ export default function AddTourney() {
       slots: Number(form.slots),
       registered: [],
     });
+    checkTourneyAchievement();
     navigate('/tourneys');
   };
 
