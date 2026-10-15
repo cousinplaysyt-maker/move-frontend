@@ -1,6 +1,10 @@
 // Small shared pieces used by the new pages.
 import { Link, useNavigate } from 'react-router-dom';
-import { IoChevronBack } from 'react-icons/io5';
+import { IoChevronBack, IoPeople, IoGridOutline } from 'react-icons/io5';
+import SportIcon from './SportIcon';
+import FavButton from './FavButton';
+import { RatingBadge } from './Stars';
+export { SportIcon };
 import { SPORTS } from '../data/seed';
 import { useSettings, useTable } from '../data/db';
 import { useSocial } from '../data/social';
@@ -36,7 +40,7 @@ export function FriendsJoining({ names }) {
   if (!going.length) return null;
   return (
     <p className="mt-2 rounded-xl bg-[#85f8c4]/50 px-3 py-2 text-sm font-semibold text-[#002114]">
-      👥 {going.map((f) => firstName(f.name)).join(', ')} {going.length > 1 ? 'are' : 'is'} joining
+      <IoPeople className="mr-1.5 inline align-[-2px]" /> {going.map((f) => firstName(f.name)).join(', ')} {going.length > 1 ? 'are' : 'is'} joining
     </p>
   );
 }
@@ -56,7 +60,7 @@ export function Page({ title, subtitle, back = true, actions, children }) {
             </button>
           )}
           <div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-[#0b1c30]">{title}</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight text-[#0b1c30]">{title}</h1>
             {subtitle && <p className="mt-0.5 text-sm text-[#565e74]">{subtitle}</p>}
           </div>
         </div>
@@ -68,11 +72,11 @@ export function Page({ title, subtitle, back = true, actions, children }) {
 }
 
 export function Card({ className = '', children }) {
-  return <div className={`rounded-2xl bg-white p-4 shadow-sm ${className}`}>{children}</div>;
+  return <div className={`rounded-2xl bg-white p-4 shadow-sm ring-1 ring-[#0b1c30]/5 transition-shadow hover:shadow-md ${className}`}>{children}</div>;
 }
 
 const variants = {
-  primary: 'bg-[#006948] text-white hover:bg-[#00855d] shadow-[0_4px_14px_rgba(0,105,72,0.3)]',
+  primary: 'bg-gradient-to-b from-[#00875f] to-[#006948] text-white hover:from-[#00a171] hover:to-[#00785a] shadow-[0_4px_14px_rgba(0,105,72,0.3)]',
   soft: 'bg-[#e5eeff] text-[#0b1c30] hover:bg-[#d3e4fe]',
   danger: 'bg-[#ffdad6] text-[#93000a] hover:bg-[#ffc9c3]',
 };
@@ -83,18 +87,18 @@ export function Btn({ to, variant = 'primary', className = '', ...props }) {
 }
 
 export function SportChips({ value, onChange }) {
-  const items = [{ key: 'all', label: 'All', emoji: '✨' }, ...SPORTS];
+  const items = [{ key: 'all', label: 'All' }, ...SPORTS];
   return (
     <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
       {items.map((s) => (
         <button
           key={s.key}
           onClick={() => onChange(s.key)}
-          className={`shrink-0 rounded-full px-4 py-2 text-sm font-semibold transition ${
-            value === s.key ? 'bg-[#006948] text-white' : 'bg-white text-[#0b1c30] shadow-sm hover:bg-[#e5eeff]'
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition active:scale-95 ${
+            value === s.key ? 'bg-[#006948] text-white shadow-[0_4px_14px_rgba(0,105,72,0.3)]' : 'bg-white text-[#0b1c30] shadow-sm ring-1 ring-[#0b1c30]/5 hover:bg-[#e5eeff]'
           }`}
         >
-          {s.emoji} {s.label}
+          {s.key === 'all' ? <IoGridOutline size={16} /> : <SportIcon sport={s.key} />} {s.label}
         </button>
       ))}
     </div>
@@ -128,13 +132,15 @@ export function VenueCard({ venue, selected, onSelect }) {
         <div className="min-w-0">
           <h3 className="truncate font-bold">{venue.name}</h3>
           <p className="truncate text-sm text-[#565e74]">{venue.area}</p>
+          <div className="mt-0.5"><RatingBadge venueId={venue.id} /></div>
           <p className="mt-1 text-sm">
-            {venue.sports.map((s) => sportOf(s).emoji).join(' ')} · {venue.courts} courts · {fmtDist(venue.distanceKm, unit)}
+            <span className="inline-flex items-center gap-1.5 align-middle">{venue.sports.map((s) => <SportIcon key={s} sport={s} size={18} />)}</span> · {venue.courts} courts · {fmtDist(venue.distanceKm, unit)}
           </p>
         </div>
         <div className="shrink-0 text-right">
           <p className="text-lg font-extrabold text-[#006948]">{peso(venue.price)}</p>
           <p className="text-xs text-[#565e74]">per court / hr</p>
+          <div className="mt-2 flex justify-end"><FavButton venueId={venue.id} /></div>
         </div>
       </div>
       <div className="mt-3 grid grid-cols-2 gap-2">

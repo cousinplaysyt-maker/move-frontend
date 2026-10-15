@@ -1,13 +1,13 @@
 import { useTable } from '../data/db';
 import { useSocial, acceptRequest, removeRequest } from '../data/social';
-import { Page, Card, Btn, Avatar, Empty, fmtDate, fmtTime, sportOf, isIn } from '../components/ui';
+import { Page, Card, Btn, Avatar, Empty, fmtDate, fmtTime, sportOf, isIn, SportIcon } from '../components/ui';
 
 export default function Friends() {
   const players = useTable('players');
   const matches = useTable('matches');
   const { friends, incoming, outgoing } = useSocial();
   const who = (r) => players.find((p) => p.id === r.playerId);
-  const sub = (p) => `${sportOf(p.sport).emoji} ${sportOf(p.sport).label} · ${p.level} · ${p.area}`;
+  const sub = (p) => <span className="inline-flex items-center gap-1.5"><SportIcon sport={p.sport} /> {sportOf(p.sport).label} · {p.level} · {p.area}</span>;
 
   const section = (title, rows) =>
     rows.length > 0 && <h2 className="mb-2 mt-6 font-bold first:mt-0">{title} ({rows.length})</h2>;
@@ -51,7 +51,7 @@ export default function Friends() {
               <Card key={r.id}>
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex min-w-0 items-center gap-3"><Avatar name={f.name} src={f.avatar} /><div className="min-w-0"><h3 className="truncate font-bold">{f.name}</h3><p className="truncate text-sm text-[#565e74]">{sub(f)}</p></div></div>
-                  <Btn variant="danger" onClick={() => removeRequest(r.id)}>Remove</Btn>
+                  <div className="flex shrink-0 gap-2"><Btn to={`/chat/${f.id}`}>Message</Btn><Btn variant="danger" onClick={() => removeRequest(r.id)}>Remove</Btn></div>
                 </div>
                 {games.length > 0 && (
                   <ul className="mt-3 space-y-1 text-sm">

@@ -144,3 +144,19 @@ body {
 .ach-char { animation: ach-bounce 1.1s ease-in-out infinite; }
 .ach-banner { animation: ach-bounce 1.6s ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) { .ach-rays, .ach-confetti, .ach-title, .ach-char, .ach-banner { animation: none; } }
+
+
+/* ---- look and feel ---- */
+html, body {
+  background:
+    radial-gradient(900px 420px at 90% -8%, rgba(133, 248, 196, .35), transparent 65%),
+    radial-gradient(800px 380px at -8% 6%, rgba(218, 226, 253, .8), transparent 65%),
+    var(--color-surface);
+  background-attachment: fixed;
+}
+@keyframes page-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.page-enter { animation: page-enter .35s ease-out both; }
+@keyframes chat-dot { 0%, 60%, 100% { transform: translateY(0); opacity: .5; } 30% { transform: translateY(-4px); opacity: 1; } }
+.chat-dot { animation: chat-dot 1s infinite; }
+:focus-visible { outline: 2px solid #006948; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .page-enter, .chat-dot { animation: none; } }

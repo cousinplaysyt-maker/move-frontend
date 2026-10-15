@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { IoSearch, IoCalendarOutline, IoAddCircleOutline, IoPeopleOutline, IoTrophyOutline, IoArrowForward } from 'react-icons/io5';
+import { IoSearch, IoCalendarOutline, IoAddCircleOutline, IoPeopleOutline, IoTrophyOutline, IoArrowForward, IoHeartOutline, IoStatsChartOutline } from 'react-icons/io5';
 import { useTable } from '../data/db';
 import { SportChips, VenueCard, Btn, inputCls } from '../components/ui';
 
@@ -13,6 +13,8 @@ const actions = [
   { to: '/host', label: 'Host Play', Icon: IoAddCircleOutline, tint: 'bg-[#dae2fd]' },
   { to: '/players', label: 'Find Players', Icon: IoPeopleOutline, tint: 'bg-[#d3e4fe]' },
   { to: '/tourneys', label: 'Tourneys', Icon: IoTrophyOutline, tint: 'bg-[#ffddb8]' },
+  { to: '/saved', label: 'Saved Courts', Icon: IoHeartOutline, tint: 'bg-[#ffdad6]' },
+  { to: '/leaderboard', label: 'Leaderboard', Icon: IoStatsChartOutline, tint: 'bg-[#e8def8]' },
 ];
 
 export default function Discover() {
@@ -21,6 +23,8 @@ export default function Discover() {
   const [sport, setSport] = useState('all');
   const [q, setQ] = useState('');
 
+  const players = useTable('players');
+  const matches = useTable('matches');
   const popular = venues.filter((v) => sport === 'all' || v.sports.includes(sport));
 
   return (
@@ -32,11 +36,16 @@ export default function Discover() {
 
       <SportChips value={sport} onChange={setSport} />
 
-      <section className="mb-6 grid overflow-hidden rounded-3xl bg-white shadow-sm md:grid-cols-2">
+      <section className="mb-6 grid overflow-hidden rounded-3xl bg-white shadow-lg shadow-[#0b1c30]/5 ring-1 ring-[#0b1c30]/5 md:grid-cols-2">
         <div className="flex flex-col justify-center gap-4 p-6 md:p-10">
           <p className="text-sm font-bold text-[#006948]">Cebu weekend showdown · 40+ matches</p>
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight md:text-5xl">Open Play Weekend in Cebu</h1>
+          <h1 className="bg-gradient-to-r from-[#0b1c30] via-[#0b1c30] to-[#006948] bg-clip-text text-4xl font-extrabold leading-tight tracking-tight text-transparent md:text-5xl">Open Play Weekend in Cebu</h1>
           <p className="text-[#3d4a42]">Pickleball, padel and basketball runs forming fast across Metro Cebu. Join solo or with a partner.</p>
+          <div className="flex flex-wrap gap-2 text-sm font-bold">
+            {[[venues.length, 'courts'], [matches.length, 'games'], [players.length, 'players']].map(([n, l]) => (
+              <span key={l} className="rounded-full bg-[#eff4ff] px-3 py-1 text-[#0b1c30]"><span className="text-[#006948]">{n}</span> {l}</span>
+            ))}
+          </div>
           <div><Btn to="/open-play" className="px-6 py-3">Browse Matches <IoArrowForward /></Btn></div>
         </div>
         <div className="min-h-[220px] bg-gradient-to-br from-[#006948] to-[#85f8c4]">
@@ -44,9 +53,9 @@ export default function Discover() {
         </div>
       </section>
 
-      <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-4">
+      <section className="mb-8 grid grid-cols-2 gap-3 md:grid-cols-3">
         {actions.map(({ to, label, Icon, tint }) => (
-          <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm transition hover:shadow-md active:scale-95">
+          <Link key={to} to={to} className="flex items-center gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-[#0b1c30]/5 transition hover:-translate-y-0.5 hover:shadow-md active:scale-95">
             <span className={`flex h-11 w-11 items-center justify-center rounded-full ${tint}`}><Icon size={22} /></span>
             <span className="font-bold">{label}</span>
           </Link>

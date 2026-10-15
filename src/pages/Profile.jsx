@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../data/auth';
 import { ACHIEVEMENTS } from '../data/achievements';
 import Chibi from '../components/Chibi';
-import { Page, Card, Btn, Avatar, Field, Empty, inputCls, fmtDate, fmtTime, sportOf } from '../components/ui';
+import { IoLockClosed, IoGlobeOutline } from 'react-icons/io5';
+import { Page, Card, Btn, Avatar, Field, Empty, inputCls, fmtDate, fmtTime, sportOf, SportIcon } from '../components/ui';
 
 export default function Profile() {
   const profile = useProfile();
@@ -40,9 +41,9 @@ export default function Profile() {
     <Page
       title="Profile"
       back={false}
-      actions={<div className="flex gap-2"><Btn to="/friends" variant="soft">Friends</Btn><Btn to="/settings" variant="soft">Settings</Btn></div>}
+      actions={<div className="flex flex-wrap justify-end gap-2"><Btn to="/saved" variant="soft">Saved</Btn><Btn to="/leaderboard" variant="soft">Leaderboard</Btn><Btn to="/friends" variant="soft">Friends</Btn><Btn to="/settings" variant="soft">Settings</Btn></div>}
     >
-      <p className="mb-3 text-sm font-semibold text-[#565e74]">{profile.isPrivate ? '🔒 Private profile' : '🌍 Public profile'} · change in Settings</p>
+      <p className="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#565e74]">{profile.isPrivate ? <><IoLockClosed /> Private profile</> : <><IoGlobeOutline /> Public profile</>} · change in Settings</p>
       <Card className="mb-4 flex items-center gap-4">
         <Avatar name={profile.name} src={profile.avatar} size={80} />
         <div className="min-w-0">
@@ -82,14 +83,14 @@ export default function Profile() {
       </Card>
 
       <h2 className="mb-2 mt-6 font-bold">Trophy case · {(profile.achievements ?? []).length}/{ACHIEVEMENTS.length}</h2>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
         {ACHIEVEMENTS.map((a) => {
           const got = (profile.achievements ?? []).includes(a.id);
           return (
             <Card key={a.id} className={`flex items-center gap-3 ${got ? '' : 'opacity-50'}`}>
               <div className={got ? '' : 'grayscale'}><Chibi who={a.who} size={44} wave={false} /></div>
               <div className="min-w-0">
-                <p className="truncate text-sm font-bold">{got ? a.icon : '🔒'} {a.title}</p>
+                <p className="truncate text-sm font-bold">{got ? <a.Icon className="inline align-[-2px] text-[#a36700]" /> : <IoLockClosed className="inline align-[-2px]" />} {a.title}</p>
                 <p className="text-xs text-[#565e74]">{a.text}</p>
               </div>
             </Card>
@@ -104,7 +105,7 @@ export default function Profile() {
         <div className="grid gap-3 md:grid-cols-2">
           {myGames.map((m) => (
             <Card key={m.id}>
-              <h3 className="font-bold">{sportOf(m.sport).emoji} {m.title}</h3>
+              <h3 className="font-bold"><SportIcon sport={m.sport} /> {m.title}</h3>
               <p className="text-sm text-[#565e74]">{fmtDate(m.date)}, {fmtTime(m.time)} · {venueName(m.venueId)}</p>
             </Card>
           ))}

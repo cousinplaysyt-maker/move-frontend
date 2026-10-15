@@ -1,5 +1,6 @@
 // Full-screen celebration: dim backdrop, spinning sunburst, confetti, big waving character.
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { IoStar } from 'react-icons/io5';
 import Chibi from './Chibi';
 import { achievementOf, CHARACTERS } from '../data/achievements';
 
@@ -42,6 +43,7 @@ export default function AchievementToast() {
   const close = () => { timers.current.forEach(clearTimeout); setLeaving(true); setTimeout(() => setCurrent(null), 400); };
   if (!current) return null;
   const who = CHARACTERS[current.who];
+  const AIcon = current.Icon;
 
   return (
     <div className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden bg-black/60 backdrop-blur-sm ${leaving ? 'ach-fade-out' : 'ach-fade-in'}`} onClick={close} role="status" aria-live="polite">
@@ -51,9 +53,9 @@ export default function AchievementToast() {
       ))}
       <div className={`relative flex w-full max-w-xl flex-col items-center px-4 ${leaving ? 'chibi-out' : 'ach-pop'}`}>
         <div className="ach-banner mb-2 rounded-full bg-gradient-to-r from-[#ffb95f] via-[#fde047] to-[#ffb95f] px-6 py-2 text-sm font-extrabold uppercase tracking-[.2em] text-[#2a1700] shadow-[0_0_30px_#ffb95f]">
-          ★ Achievement unlocked ★
+          <span className="inline-flex items-center gap-2"><IoStar /> Achievement unlocked <IoStar /></span>
         </div>
-        <h2 className="ach-title text-center text-4xl font-extrabold text-white md:text-5xl">{current.icon} {current.title}</h2>
+        <h2 className="ach-title flex items-center justify-center gap-3 text-center text-4xl font-extrabold text-white md:text-5xl"><AIcon className="shrink-0" /> {current.title}</h2>
         <div className="mt-2 flex items-end justify-center">
           <div className="ach-char drop-shadow-[0_10px_30px_rgba(255,185,95,.6)]">
             <Chibi who={current.who} size={230} />

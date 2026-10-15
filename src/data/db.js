@@ -49,6 +49,12 @@ export const db = {
   bookings: table('bookings'),
   users: table('users'),
   requests: table('requests'),
+  messages: table('messages'),
+  reviews: table('reviews'),
+  favorites: table('favorites'),
+  reminders: table('reminders'),
+  plays: table('plays'),
+  roomMessages: table('roomMessages'),
 };
 
 export function initDb() {

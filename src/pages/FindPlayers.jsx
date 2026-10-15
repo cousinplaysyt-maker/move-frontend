@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { IoChatbubbleEllipsesOutline } from 'react-icons/io5';
 import { db, useTable } from '../data/db';
 import { useSocial, sendRequest, acceptRequest } from '../data/social';
-import { Page, Card, Btn, Avatar, SportChips, Empty, inputCls, sportOf } from '../components/ui';
+import { Page, Card, Btn, Avatar, SportChips, Empty, inputCls, sportOf, SportIcon } from '../components/ui';
 
 export default function FindPlayers() {
   const players = useTable('players');
@@ -15,7 +16,7 @@ export default function FindPlayers() {
 
   const friendBtn = (p) => {
     switch (statusOf(p.id)) {
-      case 'friends': return <Btn variant="soft" disabled>Friends ✓</Btn>;
+      case 'friends': return <Btn to={`/chat/${p.id}`} variant="soft"><IoChatbubbleEllipsesOutline size={16} /> Message</Btn>;
       case 'sent': return <Btn variant="soft" disabled>Request sent</Btn>;
       case 'incoming': return <Btn onClick={() => acceptRequest(requestOf(p.id).id)}>Accept request</Btn>;
       default: return <Btn variant="soft" onClick={() => sendRequest(p.id)}>Add friend</Btn>;
@@ -40,7 +41,7 @@ export default function FindPlayers() {
                 <Avatar name={p.name} src={p.avatar} />
                 <div className="min-w-0">
                   <h3 className="truncate font-bold">{p.name}</h3>
-                  <p className="truncate text-sm text-[#565e74]">{sportOf(p.sport).emoji} {sportOf(p.sport).label} · {p.level} · {p.area}</p>
+                  <p className="truncate text-sm text-[#565e74]"><SportIcon sport={p.sport} /> {sportOf(p.sport).label} · {p.level} · {p.area}</p>
                 </div>
               </div>
               <div className="flex shrink-0 gap-2">

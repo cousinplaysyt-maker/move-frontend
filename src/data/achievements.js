@@ -1,5 +1,6 @@
 // Achievement system. Unlocks are saved on the logged-in user (db.users) so they survive refreshes.
 // Characters are ORIGINAL chibi pickleball players (see components/Chibi.jsx), not real people.
+import { IoLocation, IoMap, IoBusiness, IoRibbon, IoTrophy, IoPeople, IoChatbubbles, IoStar, IoHeart, IoTennisball, IoFlame, IoRocket } from 'react-icons/io5';
 import { db, getSession, getUser, saveProfile } from './db';
 
 export const CHARACTERS = {
@@ -12,12 +13,19 @@ export const CHARACTERS = {
 };
 
 export const ACHIEVEMENTS = [
-  { id: 'court_1', icon: '📍', title: 'Court Scout', text: 'Added your first court to the map', who: 'penny', say: "Hello! I'm Penny! You just put a new court on the map!" },
-  { id: 'court_3', icon: '🗺️', title: 'Map Maker', text: 'Added 3 courts', who: 'hoops', say: "Hoop Hero here! 3 courts, that's a triple-double!" },
-  { id: 'court_5', icon: '🏟️', title: 'Court Builder', text: 'Added 5 courts', who: 'tito', say: "Topspin Tito! 5 courts, game, set, match!" },
-  { id: 'court_10', icon: '👑', title: 'Court King', text: 'Added 10 courts', who: 'dani', say: "Dunk Dani! 10 courts. You run this city!" },
-  { id: 'tourney_1', icon: '🏆', title: 'Tournament Host', text: 'Added your first tournament', who: 'ace', say: "Coach Ace reporting! Your first tournament is live!" },
-  { id: 'player_1', icon: '🤝', title: 'Recruiter', text: 'Added your first player', who: 'kai', say: "Kai here! A new player joins the squad!" },
+  { id: 'court_1', Icon: IoLocation, title: 'Court Scout', text: 'Added your first court to the map', who: 'penny', say: "Hello! I'm Penny! You just put a new court on the map!" },
+  { id: 'court_3', Icon: IoMap, title: 'Map Maker', text: 'Added 3 courts', who: 'hoops', say: "Hoop Hero here! 3 courts, that's a triple-double!" },
+  { id: 'court_5', Icon: IoBusiness, title: 'Court Builder', text: 'Added 5 courts', who: 'tito', say: "Topspin Tito! 5 courts, game, set, match!" },
+  { id: 'court_10', Icon: IoRibbon, title: 'Court King', text: 'Added 10 courts', who: 'dani', say: "Dunk Dani! 10 courts. You run this city!" },
+  { id: 'tourney_1', Icon: IoTrophy, title: 'Tournament Host', text: 'Added your first tournament', who: 'ace', say: "Coach Ace reporting! Your first tournament is live!" },
+  { id: 'chat_1', Icon: IoChatbubbles, title: 'Social Butterfly', text: 'Sent your first message', who: 'dani', say: "Dunk Dani! First message sent. Nothing but net!" },
+  { id: 'review_1', Icon: IoStar, title: 'Honest Critic', text: 'Reviewed your first court', who: 'tito', say: "Topspin Tito! Your review helps everyone find great courts!" },
+  { id: 'fav_1', Icon: IoHeart, title: 'Bookmarked', text: 'Saved your first court', who: 'penny', say: "Penny here! Saved. Your favorite courts are one tap away." },
+  { id: 'play_1', Icon: IoTennisball, title: 'First Rally', text: 'Logged your first game', who: 'kai', say: "Kai here! First game in the books. Keep it rolling!" },
+  { id: 'streak_2', Icon: IoFlame, title: 'Warming Up', text: '2-week playing streak', who: 'dani', say: "Dunk Dani! Two weeks in a row. You're heating up!" },
+  { id: 'streak_4', Icon: IoFlame, title: 'On Fire', text: '4-week playing streak', who: 'hoops', say: "Hoop Hero! A whole month of games. On fire!" },
+  { id: 'streak_8', Icon: IoRocket, title: 'Unstoppable', text: '8-week playing streak', who: 'ace', say: "Coach Ace! Eight weeks straight. Unstoppable!" },
+  { id: 'player_1', Icon: IoPeople, title: 'Recruiter', text: 'Added your first player', who: 'kai', say: "Kai here! A new player joins the squad!" },
 ];
 
 export const achievementOf = (id) => ACHIEVEMENTS.find((a) => a.id === id);
@@ -38,3 +46,10 @@ export function checkCourtAchievements() {
 }
 export const checkTourneyAchievement = () => unlock('tourney_1');
 export const checkPlayerAchievement = () => unlock('player_1');
+export const checkChatAchievement = () => unlock('chat_1');
+export const checkReviewAchievement = () => unlock('review_1');
+export const checkFavoriteAchievement = () => unlock('fav_1');
+export function checkPlayAchievements({ total, streak }) {
+  if (total >= 1) unlock('play_1');
+  [[2, 'streak_2'], [4, 'streak_4'], [8, 'streak_8']].forEach(([need, id]) => streak >= need && unlock(id));
+}

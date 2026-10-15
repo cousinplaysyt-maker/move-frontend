@@ -15,6 +15,9 @@ import AddCourt from './pages/AddCourt';
 import AddTourney from './pages/AddTourney';
 import AddPlayer from './pages/AddPlayer';
 import Friends from './pages/Friends';
+import Chat from './pages/Chat';
+import Saved from './pages/Saved';
+import Leaderboard from './pages/Leaderboard';
 import NotFound from './pages/NotFound';
 import Auth from './pages/Auth';
 import { initDb } from './data/db';
@@ -45,6 +48,11 @@ export default function App() {
         <Route path="/tourneys/new" element={<AddTourney />} />
         <Route path="/players/new" element={<AddPlayer />} />
         <Route path="/friends" element={<Friends />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="/chat/room/:matchId" element={<Chat />} />
+        <Route path="/chat/:playerId" element={<Chat />} />
+        <Route path="/saved" element={<Saved />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

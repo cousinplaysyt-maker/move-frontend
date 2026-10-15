@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { db, getSession } from '../data/db';
 import { checkCourtAchievements } from '../data/achievements';
 import { SPORTS } from '../data/seed';
-import { Page, Card, Btn, Field, inputCls } from '../components/ui';
+import { SURFACES } from '../data/reviews';
+import { Page, Card, Btn, Field, inputCls, SportIcon } from '../components/ui';
 
 export default function AddCourt() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', area: '', price: 300, courts: 2, amenities: '', bookingUrl: '', lat: 10.3157, lng: 123.8854 });
+  const [form, setForm] = useState({ name: '', area: '', price: 300, courts: 2, amenities: '', bookingUrl: '', surface: '', lat: 10.3157, lng: 123.8854 });
   const [sports, setSports] = useState(['pickleball']);
   const [geoError, setGeoError] = useState('');
   const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
@@ -33,6 +34,7 @@ export default function AddCourt() {
       distanceKm: 5,
       amenities: form.amenities.split(',').map((a) => a.trim()).filter(Boolean),
       bookingUrl: form.bookingUrl.trim(),
+      surface: form.surface || null,
       lat: Number(form.lat),
       lng: Number(form.lng),
       addedBy: getSession(),
@@ -55,15 +57,21 @@ export default function AddCourt() {
                   type="button"
                   key={s.key}
                   onClick={() => toggle(s.key)}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold ${sports.includes(s.key) ? 'bg-[#006948] text-white' : 'bg-[#e5eeff]'}`}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold ${sports.includes(s.key) ? 'bg-[#006948] text-white' : 'bg-[#e5eeff]'}`}
                 >
-                  {s.emoji} {s.label}
+                  <SportIcon sport={s.key} /> {s.label}
                 </button>
               ))}
             </div>
           </div>
           <Field label="Price per court / hr (₱)"><input type="number" min="0" required className={inputCls} value={form.price} onChange={set('price')} /></Field>
           <Field label="Number of courts"><input type="number" min="1" required className={inputCls} value={form.courts} onChange={set('courts')} /></Field>
+          <Field label="Court surface (optional)">
+            <select className={inputCls} value={form.surface} onChange={set('surface')}>
+              <option value="">Not sure</option>
+              {SURFACES.map((s) => <option key={s}>{s}</option>)}
+            </select>
+          </Field>
           <div className="md:col-span-2">
             <Field label="Booking link"><input type="url" required className={inputCls} value={form.bookingUrl} onChange={set('bookingUrl')} placeholder="https://..." /></Field>
           </div>
